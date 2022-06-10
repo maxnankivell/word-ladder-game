@@ -424,6 +424,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vue/devtools-api@npm:^6.1.4":
+  version: 6.1.4
+  resolution: "@vue/devtools-api@npm:6.1.4"
+  checksum: 027bb138b03ec7147dd15e5d0ef28d5b72c822530396cc8a86bc6fdb049dc6850314b9e897e497064e3ed47fad229a18141f56b8b8ca3d41092a576dc5b6538d
+  languageName: node
+  linkType: hard
+
 "@vue/eslint-config-prettier@npm:^7.0.0":
   version: 7.0.0
   resolution: "@vue/eslint-config-prettier@npm:7.0.0"
@@ -1965,6 +1972,7 @@ __metadata:
     eslint-config-prettier: ^8.4.0
     eslint-plugin-prettier: ^4.0.0
     eslint-plugin-vue: ^8.5.0
+    pinia: ^2.0.14
     prettier: ^2.5.1
     sass: ^1.49.9
     sass-loader: ^12.6.0
@@ -2334,6 +2342,25 @@ __metadata:
   version: 2.3.1
   resolution: "picomatch@npm:2.3.1"
   checksum: 050c865ce81119c4822c45d3c84f1ced46f93a0126febae20737bd05ca20589c564d6e9226977df859ed5e03dc73f02584a2b0faad36e896936238238b0446cf
+  languageName: node
+  linkType: hard
+
+"pinia@npm:^2.0.14":
+  version: 2.0.14
+  resolution: "pinia@npm:2.0.14"
+  dependencies:
+    "@vue/devtools-api": ^6.1.4
+    vue-demi: "*"
+  peerDependencies:
+    "@vue/composition-api": ^1.4.0
+    typescript: ">=4.4.4"
+    vue: ^2.6.14 || ^3.2.0
+  peerDependenciesMeta:
+    "@vue/composition-api":
+      optional: true
+    typescript:
+      optional: true
+  checksum: d07ed55b53e92da0971c3fcc0a1bd520b26cd50d266f46c8bab24fed87788461782a2c75088cf97c79810e7a4ceb28381f5d77daf280883ad3340c41962d0934
   languageName: node
   linkType: hard
 
@@ -3205,6 +3232,22 @@ __metadata:
     vscode-pug-languageservice: 0.29.8
     vscode-typescript-languageservice: 0.29.8
   checksum: 6e2f7a13013b3c32996fb889d5170c6141b023e57424db81fc6df0fa7cb6d7410d976b2f55f647d28b5896d8b5090db98bb3934f3a641ef624a47f026ce4114b
+  languageName: node
+  linkType: hard
+
+"vue-demi@npm:*":
+  version: 0.13.1
+  resolution: "vue-demi@npm:0.13.1"
+  peerDependencies:
+    "@vue/composition-api": ^1.0.0-rc.1
+    vue: ^3.0.0-0 || ^2.6.0
+  peerDependenciesMeta:
+    "@vue/composition-api":
+      optional: true
+  bin:
+    vue-demi-fix: bin/vue-demi-fix.js
+    vue-demi-switch: bin/vue-demi-switch.js
+  checksum: d26b0602587f4dbd81f975f8f2de39910239805f0f2d72cafed0c7349c512f5363daf57e2761ba6a7ac66331a4cfa3dc857d6f7f62c57adbae85752d270118c8
   languageName: node
   linkType: hard
 

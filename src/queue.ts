@@ -17,7 +17,7 @@ export default class Queue {
     this.queue.unshift(item);
   }
 
-  dequeue(): string | undefined {
+  deQueue(): string | undefined {
     return this.queue.pop();
   }
 

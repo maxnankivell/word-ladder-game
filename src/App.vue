@@ -6,22 +6,16 @@
 <script setup lang="ts">
 import HelloWorld from "@/components/HelloWorld.vue";
 import { onMounted } from "vue";
-import Queue from "@/queue";
+import { storeToRefs } from "pinia";
+import { useWordObjectStore } from "@/stores/word-object-store";
+import { getShortestSolution } from "./ladder-logic";
 
-interface WordConnection {
-  [word: string]: string[];
-}
-interface ParentConnection {
-  [word: string]: string;
-}
-
-const wordArray = ["tent", "bent", "rent", "fart", "farm", "done", "dart"];
-const objectWithWordConnections: WordConnection = {};
-const objectWithParents: ParentConnection = {};
+const { wordArray, objectWithWordConnections, objectWithParents } = storeToRefs(useWordObjectStore());
 
 onMounted(() => {
-  for (const outerWord of wordArray) {
-    for (const innerWord of wordArray) {
+  // populate objectWithWordConnections and objectWithParents
+  for (const outerWord of wordArray.value) {
+    for (const innerWord of wordArray.value) {
       let sum = 0;
       for (let i = 0; i < outerWord.length; i++) {
         if (outerWord.charAt(i) == innerWord.charAt(i)) {
@@ -29,48 +23,19 @@ onMounted(() => {
         }
       }
       if (sum === 3) {
-        if (objectWithWordConnections[outerWord]) {
-          objectWithWordConnections[outerWord].push(innerWord);
+        if (objectWithWordConnections.value[outerWord]) {
+          objectWithWordConnections.value[outerWord].push(innerWord);
         } else {
-          objectWithWordConnections[outerWord] = [innerWord];
+          objectWithWordConnections.value[outerWord] = [innerWord];
         }
       }
     }
-    objectWithParents[outerWord] = ``;
+    objectWithParents.value[outerWord] = ``;
   }
 
-  console.log(objectWithWordConnections);
+  console.log(objectWithWordConnections.value);
 
-  const wordEntered = `farm`;
-  const finalWord = `dart`;
-  let solutionFound = false;
-  const queue = new Queue();
-
-  queue.enQueue(wordEntered);
-  while (!queue.isEmpty() && !solutionFound) {
-    const currentWord = queue.peek();
-    for (const word of objectWithWordConnections[currentWord]) {
-      //put into test method
-      let continueForLoop = false;
-      let testWord = word;
-      while (objectWithParents[testWord] != ``) {
-        if (objectWithParents[testWord] === word) {
-          continueForLoop = true;
-        }
-        testWord = objectWithParents[testWord];
-      }
-      if (continueForLoop) {
-        continue;
-      }
-
-      objectWithParents[word] = currentWord;
-      if (word === finalWord) {
-        solutionFound = true;
-        break;
-      }
-      queue.enQueue(word);
-    }
-  }
+  console.log(getShortestSolution(`farm`, `dart`));
 });
 </script>
 
