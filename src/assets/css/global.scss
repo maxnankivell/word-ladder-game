@@ -13,10 +13,10 @@
 }
 
 html {
-  /* font-size: 12px; */
-  /* 12px / 16px = 0.75 = 75% */
+  /* font-size: 10px; */
+  /* 10px / 16px = 0.625 = 62.5% */
   /* Percentage of user's browser font-size setting */
-  font-size: 75%;
+  font-size: 62.5%;
   font-family: "Roboto", sans-serif;
 }
 
@@ -24,7 +24,51 @@ body {
   margin: 0;
 }
 
-#app {
-  color: #2c3e50;
+h1 {
   text-align: center;
+  color: black;
+  font-size: 4.8rem;
+  letter-spacing: 0.2rem;
+  padding: 2.4rem 0;
+  margin: 0;
 }
+
+a {
+  display: block;
+}
+
+a:link,
+a:visited {
+  color: inherit;
+  text-decoration: none;
+  cursor: default;
+}
+
+a:link:active,
+a:visited:active {
+  color: inherit;
+}
+
+.router-link-active {
+}
+.router-link-exact-active {
+}
+
+// ::-webkit-scrollbar {
+//   width: 10px;
+// }
+// ::-webkit-scrollbar-track {
+//   background: grey;
+//   border-radius: 4px;
+// }
+// ::-webkit-scrollbar-thumb {
+//   background: blue;
+//   border-radius: 4px;
+//   &:hover {
+//     background: lightblue;
+//   }
+// }
+// ::-webkit-scrollbar-button,
+// ::-webkit-scrollbar-corner {
+//   display: none;
+// }

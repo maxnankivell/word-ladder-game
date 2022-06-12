@@ -424,7 +424,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/devtools-api@npm:^6.1.4":
+"@vue/devtools-api@npm:^6.0.0, @vue/devtools-api@npm:^6.1.4":
   version: 6.1.4
   resolution: "@vue/devtools-api@npm:6.1.4"
   checksum: 027bb138b03ec7147dd15e5d0ef28d5b72c822530396cc8a86bc6fdb049dc6850314b9e897e497064e3ed47fad229a18141f56b8b8ca3d41092a576dc5b6538d
@@ -1979,6 +1979,7 @@ __metadata:
     typescript: ^4.5.4
     vite: ^2.8.0
     vue: ^3.2.25
+    vue-router: 4
     vue-tsc: ^0.29.8
   languageName: unknown
   linkType: soft
@@ -3265,6 +3266,17 @@ __metadata:
   peerDependencies:
     eslint: ">=6.0.0"
   checksum: 8cc751e9fc2bfba93664ad8945732ab1c97791f9123e703de8669b65670d1e01906d80436bf4932d7ee6fa6174ed4545e8abb059206c88f4bd71957ca6cf7ba8
+  languageName: node
+  linkType: hard
+
+"vue-router@npm:4":
+  version: 4.0.16
+  resolution: "vue-router@npm:4.0.16"
+  dependencies:
+    "@vue/devtools-api": ^6.0.0
+  peerDependencies:
+    vue: ^3.2.0
+  checksum: 4b8e417c96404d4f4c69539112dfafc52f3b2427db3663d5129413a9b65aafdb95889d756af4c6d08a84d7f9e80cc0ae4667383f2c090f27c27ea4b5d83c4cec
   languageName: node
   linkType: hard
 
