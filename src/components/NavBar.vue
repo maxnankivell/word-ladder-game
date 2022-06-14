@@ -1,11 +1,16 @@
 <template>
   <div id="nav-bar-box">
-    <router-link to="/"><div class="nav-element">Home</div></router-link>
-    <router-link to="/history"><div class="nav-element">History</div></router-link>
+    <div id="helpButton" class="nav-element"><ph-question :size="32" /></div>
+    <router-link to="/"><h1>WordLadder</h1></router-link>
+    <router-link to="/history"
+      ><div class="nav-element"><ph-archive :size="32" /></div
+    ></router-link>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { PhQuestion, PhArchive } from "phosphor-vue";
+</script>
 
 <style scoped lang="scss">
 #nav-bar-box {

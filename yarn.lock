@@ -1972,6 +1972,7 @@ __metadata:
     eslint-config-prettier: ^8.4.0
     eslint-plugin-prettier: ^4.0.0
     eslint-plugin-vue: ^8.5.0
+    phosphor-vue: next
     pinia: ^2.0.14
     prettier: ^2.5.1
     sass: ^1.49.9
@@ -1981,6 +1982,7 @@ __metadata:
     vue: ^3.2.25
     vue-router: 4
     vue-tsc: ^0.29.8
+    vue3-otp-input: ^0.3.6
   languageName: unknown
   linkType: soft
 
@@ -2329,6 +2331,15 @@ __metadata:
   version: 4.0.0
   resolution: "path-type@npm:4.0.0"
   checksum: 5b1e2daa247062061325b8fdbfd1fb56dde0a448fb1455453276ea18c60685bdad23a445dc148cf87bc216be1573357509b7d4060494a6fd768c7efad833ee45
+  languageName: node
+  linkType: hard
+
+"phosphor-vue@npm:next":
+  version: 4.4.0
+  resolution: "phosphor-vue@npm:4.4.0"
+  peerDependencies:
+    vue: ^3.0.0 <3.0.3
+  checksum: 721e222e6ec4fbc6d2a18dc92f96183beb3542b41a8fb4396bcdf77e9319b89a79c8742767632632d080914578afaeb8f27eeed6ba345e6192b60cc3c14559b3
   languageName: node
   linkType: hard
 
@@ -3291,6 +3302,15 @@ __metadata:
   bin:
     vue-tsc: bin/vue-tsc.js
   checksum: b47e36eb20b3621cb0fef5363e73559714c8389c369cbb9b94a382292b0ebcea3f05b96389b6337add058133dbd2b2f103236581314a513a609f4df1bd64de73
+  languageName: node
+  linkType: hard
+
+"vue3-otp-input@npm:^0.3.6":
+  version: 0.3.6
+  resolution: "vue3-otp-input@npm:0.3.6"
+  peerDependencies:
+    vue: ^3.0.*
+  checksum: 70ba2dcc6aa73d2ca1748a80cbf5f5d190141385e6253bf4c0e05897d8fcbe963f5a2df29e0c59b2a0826777bcf462eb7b264b85fa1252b0760561452a8def5d
   languageName: node
   linkType: hard
 

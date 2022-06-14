@@ -1,17 +1,43 @@
 <template>
   <div id="game-page">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
-    <button @click="populateObjectWithWordConnections">Populate Object With Word Connections</button>
+    <v-otp-input
+      :num-input="4"
+      input-classes="start-word-otp"
+      input-type="letter-numeric"
+      inputmode="text"
+      separator=""
+      :placeholder="startWord"
+      :conditional-class="['one', 'two', 'three', 'four']"
+      :is-disabled="true"
+    />
+    <InputArea />
+    <v-otp-input
+      :num-input="4"
+      input-classes="end-word-otp"
+      input-type="letter-numeric"
+      inputmode="text"
+      separator=""
+      :placeholder="endWord"
+      :conditional-class="['one', 'two', 'three', 'four']"
+      :is-disabled="true"
+    />
+    <button type="button">New Random Puzzle</button>
+    <!-- <button @click="populateObjectWithWordConnections">Populate Object With Word Connections</button> -->
   </div>
 </template>
 
 <script setup lang="ts">
-import HelloWorld from "@/components/HelloWorld.vue";
 import { storeToRefs } from "pinia";
 import { useWordObjectStore } from "@/stores/word-object-store";
+import VOtpInput from "vue3-otp-input";
+import { ref } from "vue";
+
+import InputArea from "./components/InputArea.vue";
 
 const { wordArray, objectWithWordConnections } = storeToRefs(useWordObjectStore());
+
+const startWord = ref<string[]>(["D", "O", "O", "R"]);
+const endWord = ref<string[]>(["F", "A", "R", "M"]);
 
 function populateObjectWithWordConnections(): void {
   for (const outerWord of wordArray.value) {
