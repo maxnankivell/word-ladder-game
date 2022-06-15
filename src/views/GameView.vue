@@ -32,7 +32,7 @@ import { useWordObjectStore } from "@/stores/word-object-store";
 import VOtpInput from "vue3-otp-input";
 import { ref } from "vue";
 
-import InputArea from "./components/InputArea.vue";
+import InputArea from "@/components/InputArea.vue";
 
 const { wordArray, objectWithWordConnections } = storeToRefs(useWordObjectStore());
 
