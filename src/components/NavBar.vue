@@ -91,6 +91,7 @@ const iconWeight = ref<Weight[]>(["regular", "regular", "regular"]);
 
 .nav-element {
   cursor: pointer;
+  transition: all 0.05s;
 
   &:hover {
     transform: scale(1.15);

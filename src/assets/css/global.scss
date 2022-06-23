@@ -43,6 +43,20 @@ h1 {
   line-height: 1;
 }
 
+button {
+  border: 0;
+  font-size: 2rem;
+  font-weight: 600;
+  padding: 1.6rem;
+  transition: all 0.05s;
+  &:focus {
+    outline: 5px solid yellow;
+  }
+  &:hover {
+    transform: scale(1.15);
+  }
+}
+
 a {
   display: block;
 }
