@@ -1,10 +1,11 @@
 import { WordConnection } from "@/types";
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import { useStorage } from "@vueuse/core";
 
 export const useWordObjectStore = defineStore("wordObjectStore", () => {
-  const wordArray = ref(["tent", "bent", "rent", "fart", "farm", "done", "dart", "farc"]);
-  const objectWithWordConnections = ref<WordConnection>({});
+  const wordArray = useStorage<string[]>("word-array", []);
+  const objectWithWordConnections = useStorage<WordConnection>("object-with-word-connections", {});
 
   return { wordArray, objectWithWordConnections };
 });

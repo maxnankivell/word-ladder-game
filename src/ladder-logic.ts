@@ -84,6 +84,21 @@ export async function getRandomStartWordAndEndWord(): Promise<string[]> {
   return [wordArray.value[firstNumber], wordArray.value[secondNumber]];
 }
 
+/*
+ * This function retrieves all words with a certain number of connections
+ */
+export function getWordsWithNumberOfConnections(n: number): string[] {
+  const { objectWithWordConnections } = storeToRefs(useWordObjectStore());
+  const result = [];
+
+  for (const word in objectWithWordConnections.value) {
+    if (objectWithWordConnections.value[word].length === n) {
+      result.push(word);
+    }
+  }
+  return result;
+}
+
 function populateParentsObject(objectWithParents: ParentConnection): void {
   const { wordArray } = storeToRefs(useWordObjectStore());
   for (const word of wordArray.value) {
