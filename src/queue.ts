@@ -1,5 +1,5 @@
 export default class Queue {
-  private queue: string[];
+  private queue: number[];
 
   constructor() {
     this.queue = [];
@@ -13,15 +13,15 @@ export default class Queue {
     return this.queue.length === 0;
   }
 
-  enQueue(item: string): void {
+  enQueue(item: number): void {
     this.queue.unshift(item);
   }
 
-  deQueue(): string | undefined {
+  deQueue(): number | undefined {
     return this.queue.pop();
   }
 
-  peek(): string {
+  peek(): number {
     return this.queue[this.queue.length - 1];
   }
 }

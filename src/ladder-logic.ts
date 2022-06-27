@@ -15,22 +15,32 @@ export function getShortestSolution(wordEntered: string, finalWord: string): str
     return null;
   }
 
-  populateParentsObject(objectWithParents);
+  // populateParentsObject(objectWithParents);
 
-  queue.enQueue(wordEntered);
+  let id = 1;
+  let isAlreadyInTree: boolean;
+  let treeHeight: number;
+
+  objectWithParents[0] = { parentID: null, word: wordEntered };
+  queue.enQueue(0);
   while (!queue.isEmpty()) {
-    const currentWord = queue.peek();
+    const currentID = queue.peek();
     queue.deQueue();
-    for (const word of objectWithWordConnections.value[currentWord]) {
-      if (testForWordAlreadyInTree(objectWithParents, word, currentWord, wordEntered)) {
+    for (const word of objectWithWordConnections.value[objectWithParents[currentID].word]) {
+      [isAlreadyInTree, treeHeight] = testForWordAlreadyInTree(objectWithParents, word, currentID);
+      if (treeHeight > 7) {
+        return null;
+      }
+      if (isAlreadyInTree) {
         continue;
       }
 
-      objectWithParents[word] = currentWord;
+      objectWithParents[id] = { parentID: currentID, word: word };
       if (word === finalWord) {
-        return getPathFromRootToLeaf(objectWithParents, finalWord);
+        return getPathFromRootToLeaf(objectWithParents, id);
       }
-      queue.enQueue(word);
+      queue.enQueue(id);
+      id++;
     }
   }
 
@@ -73,7 +83,7 @@ export function isPuzzleComplete(wordEntered: string, finalWord: string): boolea
  * This function retrieves a randow start an end word and returns them as an array
  */
 export async function getRandomStartWordAndEndWord(): Promise<string[]> {
-  const { wordArray } = storeToRefs(useWordObjectStore());
+  const { wordArray, objectWithWordConnections } = storeToRefs(useWordObjectStore());
   const response = await fetch(
     `https://www.random.org/integers/?num=2&min=1&max=${wordArray.value.length}&col=1&base=10&format=plain&rnd=new`
   );
@@ -81,11 +91,14 @@ export async function getRandomStartWordAndEndWord(): Promise<string[]> {
   const numberArray = responseText.split(/\r?\n/);
   const firstNumber = Number(numberArray[0]) - 1;
   const secondNumber = Number(numberArray[1]) - 1;
+  console.log(wordArray.value[firstNumber], wordArray.value[secondNumber]);
+  console.log(Object.keys(objectWithWordConnections.value).includes(wordArray.value[firstNumber]));
+  console.log(Object.keys(objectWithWordConnections.value).includes(wordArray.value[secondNumber]));
   if (
     notIntroPuzzle(wordArray.value[firstNumber], wordArray.value[secondNumber]) &&
-    !getWordsWithNumberOfConnections(0).includes(wordArray.value[firstNumber]) &&
+    Object.keys(objectWithWordConnections.value).includes(wordArray.value[firstNumber]) &&
     !getWordsWithNumberOfConnections(1).includes(wordArray.value[firstNumber]) &&
-    !getWordsWithNumberOfConnections(0).includes(wordArray.value[secondNumber]) &&
+    Object.keys(objectWithWordConnections.value).includes(wordArray.value[secondNumber]) &&
     !getWordsWithNumberOfConnections(1).includes(wordArray.value[secondNumber]) &&
     getShortestSolution(wordArray.value[firstNumber], wordArray.value[secondNumber])
   ) {
@@ -129,39 +142,34 @@ function getWordsWithNumberOfConnections(n: number): string[] {
   return result;
 }
 
-function populateParentsObject(objectWithParents: ParentConnection): void {
-  const { wordArray } = storeToRefs(useWordObjectStore());
-  for (const word of wordArray.value) {
-    objectWithParents[word] = ``;
-  }
-}
-
 function testForWordAlreadyInTree(
   objectWithParents: ParentConnection,
   wordToLookFor: string,
-  wordAtLeafOfTree: string,
-  wordAtRootOfTree: string
-): boolean {
-  let testWord = wordAtLeafOfTree;
-  if (testWord === wordToLookFor) {
-    return true;
+  IDAtLeafOfTree: number
+): [boolean, number] {
+  let testID: number | null = IDAtLeafOfTree;
+  let isAlreadyInTree = false;
+  let treeHeight = 0;
+  if (objectWithParents[testID].word === wordToLookFor) {
+    isAlreadyInTree = true;
   }
-  while (testWord != wordAtRootOfTree) {
-    testWord = objectWithParents[testWord];
-    if (testWord === wordToLookFor) {
-      return true;
+  while (testID && objectWithParents[testID].parentID != null) {
+    testID = objectWithParents[testID].parentID;
+    if (testID && objectWithParents[testID].word === wordToLookFor) {
+      isAlreadyInTree = true;
     }
+    treeHeight++;
   }
-  return false;
+  return [isAlreadyInTree, treeHeight];
 }
 
-function getPathFromRootToLeaf(objectWithParents: ParentConnection, wordAtLeafOfTree: string): string[] {
+function getPathFromRootToLeaf(objectWithParents: ParentConnection, IDAtLeafOfTree: number): string[] {
   const finalSequence = [];
-  let word = wordAtLeafOfTree;
+  let wordID: number | null = IDAtLeafOfTree;
   // The roots parent will always be empty string
-  while (word) {
-    finalSequence.unshift(word);
-    word = objectWithParents[word];
+  while (wordID != null) {
+    finalSequence.unshift(objectWithParents[wordID].word);
+    wordID = objectWithParents[wordID].parentID;
   }
 
   return finalSequence;

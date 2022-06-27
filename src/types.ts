@@ -1,6 +1,9 @@
 export interface WordConnection {
   [word: string]: string[];
 }
+// export interface ParentConnection {
+//   [word: string]: string;
+// }
 export interface ParentConnection {
-  [word: string]: string;
+  [id: number]: { parentID: number | null; word: string };
 }
