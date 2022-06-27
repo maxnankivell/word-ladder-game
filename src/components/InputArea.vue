@@ -1,6 +1,6 @@
 <template>
   <div class="input-area">
-    <template v-for="(word, index) in inputWords" :key="word.join('') + index">
+    <template v-for="(word, index) in inputWords" :key="index">
       <v-otp-input
         :num-input="4"
         :input-classes="['input-otp-input', colorMode === 'dark' ? 'dark' : 'light']"
@@ -9,25 +9,83 @@
         separator=""
         :placeholder="word"
         :conditional-class="['one', 'two', 'three', 'four']"
-        :is-disabled="word.join('') ? true : false"
+        :is-disabled="true"
         class="input-otp-main"
       />
     </template>
+    <v-otp-input
+      v-if="!isPuzzleComplete"
+      ref="otpInput"
+      :num-input="4"
+      :input-classes="['input-otp-input', colorMode === 'dark' ? 'dark' : 'light']"
+      input-type="letter-numeric"
+      inputmode="text"
+      separator=""
+      :should-auto-focus="true"
+      :conditional-class="['one', 'two', 'three', 'four']"
+      :is-disabled="false"
+      class="input-otp-main"
+      @keydown.backspace="checkDeleteWord"
+      @on-change="updateCurrentWord"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, defineProps, defineEmits, computed } from "vue";
 import { storeToRefs } from "pinia";
 import VOtpInput from "vue3-otp-input";
 import { useColorModeStore } from "@/stores/color-mode-store";
+import { isValidWord } from "@/ladder-logic";
 
 const { colorMode } = storeToRefs(useColorModeStore());
 
-const inputWords = ref<string[][]>([
-  ["D", "O", "O", "M"],
-  ["", "", "", ""],
-]);
+interface Props {
+  inputWords: string[][];
+  startWord: string;
+  finalWord: string;
+}
+
+const emit = defineEmits<{
+  (emit: "add-input-word", inputWord: string[]): void;
+  (emit: "remove-input-word"): void;
+}>();
+
+const props = defineProps<Props>();
+
+const otpInput = ref<typeof VOtpInput>();
+const clearInput = () => otpInput.value?.clearInput();
+
+const isPuzzleComplete = computed(
+  () => props.inputWords.length > 0 && props.inputWords[props.inputWords.length - 1].join("") === props.finalWord
+);
+const getPreviousWord = () =>
+  props.inputWords.length > 0 ? props.inputWords[props.inputWords.length - 1].join("") : props.startWord;
+
+let emptyCount = 2;
+
+async function updateCurrentWord(newWord: string) {
+  console.log("change");
+  if (newWord === "") {
+    emptyCount = 1;
+  } else {
+    emptyCount = 0;
+  }
+  if (newWord.length === 4 && isValidWord(newWord, getPreviousWord())) {
+    await emit("add-input-word", newWord.split(""));
+    clearInput();
+    emptyCount = 2;
+  }
+}
+
+function checkDeleteWord() {
+  console.log("deletekey");
+  if (emptyCount === 1) {
+    emptyCount = 2;
+  } else if (emptyCount === 2) {
+    emit("remove-input-word");
+  }
+}
 </script>
 
 <style lang="scss" scoped>

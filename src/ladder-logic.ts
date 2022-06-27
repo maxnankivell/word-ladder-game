@@ -81,13 +81,43 @@ export async function getRandomStartWordAndEndWord(): Promise<string[]> {
   const numberArray = responseText.split(/\r?\n/);
   const firstNumber = Number(numberArray[0]) - 1;
   const secondNumber = Number(numberArray[1]) - 1;
-  return [wordArray.value[firstNumber], wordArray.value[secondNumber]];
+  if (
+    notIntroPuzzle(wordArray.value[firstNumber], wordArray.value[secondNumber]) &&
+    !getWordsWithNumberOfConnections(0).includes(wordArray.value[firstNumber]) &&
+    !getWordsWithNumberOfConnections(1).includes(wordArray.value[firstNumber]) &&
+    !getWordsWithNumberOfConnections(0).includes(wordArray.value[secondNumber]) &&
+    !getWordsWithNumberOfConnections(1).includes(wordArray.value[secondNumber]) &&
+    getShortestSolution(wordArray.value[firstNumber], wordArray.value[secondNumber])
+  ) {
+    return [wordArray.value[firstNumber], wordArray.value[secondNumber]];
+  }
+  return getRandomStartWordAndEndWord();
 }
 
 /*
- * This function retrieves all words with a certain number of connections
+ * This function retrieves all possible next words from the current word
  */
-export function getWordsWithNumberOfConnections(n: number): string[] {
+export function getPossibleWords(word: string): string[] {
+  const { objectWithWordConnections } = storeToRefs(useWordObjectStore());
+  return objectWithWordConnections.value[word];
+}
+
+/*
+ * This function retrieves the optimal next word from the current word
+ */
+export function getOptimalNextWord(word: string, finalWord: string): string {
+  const bestWord = getShortestSolution(word, finalWord);
+  if (bestWord && bestWord[1]) {
+    return bestWord[1];
+  }
+  return `There is no way to solve from here`;
+}
+
+function notIntroPuzzle(wordEntered: string, finalWord: string): boolean {
+  return wordEntered !== `them` && finalWord !== `than`;
+}
+
+function getWordsWithNumberOfConnections(n: number): string[] {
   const { objectWithWordConnections } = storeToRefs(useWordObjectStore());
   const result = [];
 

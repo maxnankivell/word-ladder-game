@@ -12,7 +12,13 @@
         :is-disabled="true"
         class="start-end-otp-main"
       />
-      <InputArea />
+      <InputArea
+        :input-words="inputWords"
+        :start-word="startWord.join('')"
+        :final-word="endWord.join('')"
+        @add-input-word="addInputWord"
+        @remove-input-word="removeInputWord"
+      />
       <v-otp-input
         :num-input="4"
         :input-classes="['start-end-otp-input', colorMode === 'dark' ? 'dark' : 'light']"
@@ -25,7 +31,11 @@
         class="start-end-otp-main"
       />
     </div>
-    <button id="new-puzzle" :class="[colorMode === 'dark' ? 'dark' : 'light']" type="button">New Random Puzzle</button>
+    <button id="new-puzzle" :class="[colorMode === 'dark' ? 'dark' : 'light']" type="button" @click="newPuzzle">
+      New Random Puzzle
+    </button>
+    <button :class="[colorMode === 'dark' ? 'dark' : 'light']" type="button" @click="resetCurrentPuzzle">Reset</button>
+    <button :class="[colorMode === 'dark' ? 'dark' : 'light']" type="button" @click="showSolution">Solution</button>
     <!-- <button @click="populateObjectWithWordConnections">Populate Object With Word Connections</button> -->
   </div>
 </template>
@@ -35,20 +45,24 @@ import { storeToRefs } from "pinia";
 import { useWordObjectStore } from "@/stores/word-object-store";
 import VOtpInput from "vue3-otp-input";
 import { onBeforeMount, onMounted, ref } from "vue";
-
 import InputArea from "@/components/InputArea.vue";
-
+import { useColorModeStore } from "@/stores/color-mode-store";
 import { doc, getDoc } from "firebase/firestore";
 import db from "@/firebase";
-
-import { useColorModeStore } from "@/stores/color-mode-store";
+import { useStorage } from "@vueuse/core";
+import {
+  getOptimalNextWord,
+  getPossibleWords,
+  getRandomStartWordAndEndWord,
+  getShortestSolution,
+} from "@/ladder-logic";
 
 const { colorMode } = storeToRefs(useColorModeStore());
-
 const { wordArray, objectWithWordConnections } = storeToRefs(useWordObjectStore());
 
-const startWord = ref<string[]>(["D", "O", "O", "R"]);
-const endWord = ref<string[]>(["F", "A", "R", "M"]);
+const startWord = useStorage<string[]>("startWord", ["t", "h", "e", "m"]);
+const endWord = useStorage<string[]>("endWord", ["t", "h", "a", "n"]);
+const inputWords = useStorage<string[][]>("inputWords", []);
 
 onBeforeMount(async () => {
   if (wordArray.value.length > 0 && Object.keys(objectWithWordConnections.value).length > 0) {
@@ -66,6 +80,65 @@ onBeforeMount(async () => {
     console.log("No such document!");
   }
 });
+
+onMounted(() => {
+  if (startWord.value.join("") === `them` && endWord.value.join("") === `than`) {
+    //show intro modal
+  }
+});
+
+const convertToSplitWordArray = (arr: string[]): string[][] => arr.map((element) => element.split(""));
+
+async function newPuzzle() {
+  //in future maybe save history here????
+
+  inputWords.value = [];
+  let start: string;
+  let end: string;
+  [start, end] = await getRandomStartWordAndEndWord();
+  startWord.value = start.split("");
+  endWord.value = end.split("");
+}
+
+function addInputWord(newWordArr: string[]) {
+  inputWords.value.push(newWordArr);
+}
+
+function removeInputWord() {
+  inputWords.value.pop();
+}
+
+function showSolution() {
+  const arr = getShortestSolution(startWord.value.join(""), endWord.value.join(""));
+  if (!arr) {
+    return;
+  }
+  inputWords.value = convertToSplitWordArray(arr);
+}
+
+function resetCurrentPuzzle() {
+  inputWords.value = [];
+}
+
+function showOptimalNextWord() {
+  const optimalWord = getOptimalNextWord(getLatestCompleteInputWord(), endWord.value.join(""));
+  //show this somehow
+}
+
+function showPossibleNextWords() {
+  const possibleWords = getPossibleWords(getLatestCompleteInputWord());
+  //show this somehow
+}
+
+function getLatestCompleteInputWord(): string {
+  if (inputWords.value[inputWords.value.length - 1].length === 4) {
+    return inputWords.value[inputWords.value.length - 1].join("");
+  }
+  if (inputWords.value[inputWords.value.length - 2].length === 4) {
+    return inputWords.value[inputWords.value.length - 2].join("");
+  }
+  return startWord.value.join("");
+}
 </script>
 
 <style scoped lang="scss">
