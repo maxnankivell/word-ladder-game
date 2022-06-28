@@ -18,8 +18,6 @@ export function getShortestSolution(wordEntered: string, finalWord: string): str
   // populateParentsObject(objectWithParents);
 
   let id = 1;
-  let isAlreadyInTree: boolean;
-  let treeHeight: number;
 
   objectWithParents[0] = { parentID: null, word: wordEntered };
   queue.enQueue(0);
@@ -27,11 +25,10 @@ export function getShortestSolution(wordEntered: string, finalWord: string): str
     const currentID = queue.peek();
     queue.deQueue();
     for (const word of objectWithWordConnections.value[objectWithParents[currentID].word]) {
-      [isAlreadyInTree, treeHeight] = testForWordAlreadyInTree(objectWithParents, word, currentID);
-      if (treeHeight > 7) {
+      if (id > 100000) {
         return null;
       }
-      if (isAlreadyInTree) {
+      if (testForWordAlreadyInTree(objectWithParents, word, currentID)) {
         continue;
       }
 
@@ -91,9 +88,6 @@ export async function getRandomStartWordAndEndWord(): Promise<string[]> {
   const numberArray = responseText.split(/\r?\n/);
   const firstNumber = Number(numberArray[0]) - 1;
   const secondNumber = Number(numberArray[1]) - 1;
-  console.log(wordArray.value[firstNumber], wordArray.value[secondNumber]);
-  console.log(Object.keys(objectWithWordConnections.value).includes(wordArray.value[firstNumber]));
-  console.log(Object.keys(objectWithWordConnections.value).includes(wordArray.value[secondNumber]));
   if (
     notIntroPuzzle(wordArray.value[firstNumber], wordArray.value[secondNumber]) &&
     Object.keys(objectWithWordConnections.value).includes(wordArray.value[firstNumber]) &&
@@ -102,8 +96,10 @@ export async function getRandomStartWordAndEndWord(): Promise<string[]> {
     !getWordsWithNumberOfConnections(1).includes(wordArray.value[secondNumber]) &&
     getShortestSolution(wordArray.value[firstNumber], wordArray.value[secondNumber])
   ) {
+    console.log("success: ", wordArray.value[firstNumber], wordArray.value[secondNumber]);
     return [wordArray.value[firstNumber], wordArray.value[secondNumber]];
   }
+  console.log("fail: ", wordArray.value[firstNumber], wordArray.value[secondNumber]);
   return getRandomStartWordAndEndWord();
 }
 
@@ -146,10 +142,9 @@ function testForWordAlreadyInTree(
   objectWithParents: ParentConnection,
   wordToLookFor: string,
   IDAtLeafOfTree: number
-): [boolean, number] {
+): boolean {
   let testID: number | null = IDAtLeafOfTree;
   let isAlreadyInTree = false;
-  let treeHeight = 0;
   if (objectWithParents[testID].word === wordToLookFor) {
     isAlreadyInTree = true;
   }
@@ -158,9 +153,8 @@ function testForWordAlreadyInTree(
     if (testID && objectWithParents[testID].word === wordToLookFor) {
       isAlreadyInTree = true;
     }
-    treeHeight++;
   }
-  return [isAlreadyInTree, treeHeight];
+  return isAlreadyInTree;
 }
 
 function getPathFromRootToLeaf(objectWithParents: ParentConnection, IDAtLeafOfTree: number): string[] {
