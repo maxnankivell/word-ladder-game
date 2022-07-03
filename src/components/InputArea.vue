@@ -17,10 +17,11 @@
       v-if="!isPuzzleComplete"
       ref="otpInput"
       :num-input="4"
-      :input-classes="['input-otp-input', colorMode === 'dark' ? 'dark' : 'light']"
+      :input-classes="['input-otp-input-active', colorMode === 'dark' ? 'dark' : 'light']"
       input-type="letter-numeric"
       inputmode="text"
       separator=""
+      :placeholder="hint.split('')"
       :should-auto-focus="true"
       :conditional-class="['one', 'two', 'three', 'four']"
       :is-disabled="false"
@@ -44,11 +45,13 @@ interface Props {
   inputWords: string[][];
   startWord: string;
   finalWord: string;
+  hint: string;
 }
 
 const emit = defineEmits<{
   (emit: "add-input-word", inputWord: string[]): void;
   (emit: "remove-input-word"): void;
+  (emit: "remove-hint"): void;
 }>();
 
 const props = defineProps<Props>();
@@ -73,6 +76,7 @@ async function updateCurrentWord(newWord: string) {
   }
   if (newWord.length === 4 && isValidWord(newWord, getPreviousWord())) {
     await emit("add-input-word", newWord.split(""));
+    await emit("remove-hint");
     clearInput();
     emptyCount = 2;
   }
@@ -102,7 +106,8 @@ function checkDeleteWord() {
 </style>
 
 <style lang="scss">
-.input-otp-input {
+.input-otp-input,
+.input-otp-input-active {
   height: 8rem;
   width: 8rem;
   border-radius: 4px;
@@ -135,8 +140,24 @@ function checkDeleteWord() {
     }
   }
 }
+
+.input-otp-input-active {
+  &.light {
+    &::placeholder {
+      color: $melon;
+    }
+  }
+  &.dark {
+    &::placeholder {
+      color: $melon;
+    }
+  }
+}
+
 .input-otp-input::-webkit-inner-spin-button,
-.input-otp-input::-webkit-outer-spin-button {
+.input-otp-input::-webkit-outer-spin-button,
+.input-otp-input-active::-webkit-inner-spin-button,
+.input-otp-input-active::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }

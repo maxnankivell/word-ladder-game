@@ -16,8 +16,10 @@
         :input-words="inputWords"
         :start-word="startWord.join('')"
         :final-word="endWord.join('')"
+        :hint="hint"
         @add-input-word="addInputWord"
         @remove-input-word="removeInputWord"
+        @remove-hint="removeHint"
       />
       <v-otp-input
         :num-input="4"
@@ -77,6 +79,7 @@ const { wordArray, objectWithWordConnections } = storeToRefs(useWordObjectStore(
 const startWord = useStorage<string[]>("startWord", ["t", "h", "e", "m"]);
 const endWord = useStorage<string[]>("endWord", ["t", "h", "a", "n"]);
 const inputWords = useStorage<string[][]>("inputWords", []);
+const hint = ref("");
 
 onBeforeMount(async () => {
   if (wordArray.value.length > 0 && Object.keys(objectWithWordConnections.value).length > 0) {
@@ -122,6 +125,10 @@ function removeInputWord() {
   inputWords.value.pop();
 }
 
+function removeHint() {
+  hint.value = "";
+}
+
 function showSolution() {
   const arr = getShortestSolution(startWord.value.join(""), endWord.value.join(""));
   if (!arr) {
@@ -133,10 +140,16 @@ function showSolution() {
 
 function resetCurrentPuzzle() {
   inputWords.value = [];
+  removeHint();
 }
 
 function showHint() {
-  //To-do
+  const optimalWord = getOptimalNextWord(getLatestCompleteInputWord(), endWord.value.join(""));
+  if (!optimalWord) {
+    //Display no path to end
+    return;
+  }
+  hint.value = optimalWord;
 }
 
 function showOptimalNextWord() {
@@ -150,11 +163,9 @@ function showPossibleNextWords() {
 }
 
 function getLatestCompleteInputWord(): string {
-  if (inputWords.value[inputWords.value.length - 1].length === 4) {
+  if (inputWords.value.length !== 0) {
+    console.log(inputWords.value);
     return inputWords.value[inputWords.value.length - 1].join("");
-  }
-  if (inputWords.value[inputWords.value.length - 2].length === 4) {
-    return inputWords.value[inputWords.value.length - 2].join("");
   }
   return startWord.value.join("");
 }

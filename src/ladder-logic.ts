@@ -114,12 +114,12 @@ export function getPossibleWords(word: string): string[] {
 /*
  * This function retrieves the optimal next word from the current word
  */
-export function getOptimalNextWord(word: string, finalWord: string): string {
+export function getOptimalNextWord(word: string, finalWord: string): string | null {
   const bestWord = getShortestSolution(word, finalWord);
   if (bestWord && bestWord[1]) {
     return bestWord[1];
   }
-  return `There is no way to solve from here`;
+  return null;
 }
 
 function notIntroPuzzle(wordEntered: string, finalWord: string): boolean {
