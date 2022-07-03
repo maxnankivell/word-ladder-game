@@ -127,8 +127,8 @@ function checkDeleteWord() {
     }
   }
   &.dark {
-    background-color: black;
-    border: 3px solid $spaceCadet-1-dark;
+    background-color: $spaceCadet;
+    border: 0;
     color: $isabelline;
     &::placeholder {
       color: $isabelline;

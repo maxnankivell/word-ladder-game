@@ -67,7 +67,7 @@ const iconWeight = ref<Weight[]>(["regular", "regular", "regular"]);
   }
 
   &.dark {
-    background-color: $oxfordBlue;
+    background-color: #060a16;
   }
 }
 

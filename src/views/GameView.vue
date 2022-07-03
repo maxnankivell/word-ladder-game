@@ -31,12 +31,26 @@
         class="start-end-otp-main"
       />
     </div>
+    <div class="bottom-button-section">
+      <button
+        id="reset-puzzle"
+        :class="[colorMode === 'dark' ? 'dark' : 'light']"
+        type="button"
+        @click="resetCurrentPuzzle"
+      >
+        Reset
+      </button>
+      <button id="show-hint" :class="[colorMode === 'dark' ? 'dark' : 'light']" type="button" @click="showHint">
+        Hint
+      </button>
+      <button id="show-solution" :class="[colorMode === 'dark' ? 'dark' : 'light']" type="button" @click="showSolution">
+        Solution
+      </button>
+      <!-- <button @click="populateObjectWithWordConnections">Populate Object With Word Connections</button> -->
+    </div>
     <button id="new-puzzle" :class="[colorMode === 'dark' ? 'dark' : 'light']" type="button" @click="newPuzzle">
       New Random Puzzle
     </button>
-    <button :class="[colorMode === 'dark' ? 'dark' : 'light']" type="button" @click="resetCurrentPuzzle">Reset</button>
-    <button :class="[colorMode === 'dark' ? 'dark' : 'light']" type="button" @click="showSolution">Solution</button>
-    <!-- <button @click="populateObjectWithWordConnections">Populate Object With Word Connections</button> -->
   </div>
 </template>
 
@@ -113,11 +127,16 @@ function showSolution() {
   if (!arr) {
     return;
   }
+  arr.splice(0, 1);
   inputWords.value = convertToSplitWordArray(arr);
 }
 
 function resetCurrentPuzzle() {
   inputWords.value = [];
+}
+
+function showHint() {
+  //To-do
 }
 
 function showOptimalNextWord() {
@@ -156,12 +175,20 @@ function getLatestCompleteInputWord(): string {
   gap: 1.6rem;
   align-content: center;
 }
+
+.bottom-button-section {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
 .start-end-otp-main {
   gap: 1rem;
   justify-content: center;
 }
 
-#new-puzzle {
+#reset-puzzle,
+#show-solution,
+#show-hint {
   &.light {
     background-color: $yInMnBlue-1-light;
     box-shadow: 0 4px 6px -1px rgb(11 19 43 / 0.1), 0 2px 4px -2px rgb(11 19 43 / 0.1);
@@ -170,6 +197,19 @@ function getLatestCompleteInputWord(): string {
   &.dark {
     background-color: $spaceCadet-1-dark;
     color: $isabelline;
+    box-shadow: 0px 0px 0px 3px rgba(58, 80, 107, 0.5) inset;
+  }
+}
+#new-puzzle {
+  &.light {
+    // box-shadow: 0px 0px 0px 3px $melon inset;
+    box-shadow: 0 4px 6px -1px rgb(11 19 43 / 0.1), 0 2px 4px -2px rgb(11 19 43 / 0.1), 0px 0px 0px 3px $melon inset;
+    color: $yInMnBlue;
+  }
+  &.dark {
+    background-color: $spaceCadet-1-dark;
+    color: $melon;
+    box-shadow: 0px 0px 0px 3px rgba(58, 80, 107, 0.5) inset;
   }
 }
 </style>
@@ -183,6 +223,7 @@ function getLatestCompleteInputWord(): string {
   font-size: 4rem;
   padding: 0;
   font-weight: 600;
+  box-shadow: 0px 0px 0px 3px rgba(58, 80, 107, 0.5) inset;
 
   &:disabled {
     border: 0;

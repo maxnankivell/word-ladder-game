@@ -47,7 +47,8 @@ button {
   border: 0;
   font-size: 2rem;
   font-weight: 600;
-  padding: 1.6rem;
+  padding: 1.6rem 2.4rem;
+  border-radius: 4px;
   transition: all 0.05s;
   &:focus {
     outline: 5px solid yellow;

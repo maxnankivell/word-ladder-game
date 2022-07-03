@@ -25,7 +25,7 @@ export function getShortestSolution(wordEntered: string, finalWord: string): str
     const currentID = queue.peek();
     queue.deQueue();
     for (const word of objectWithWordConnections.value[objectWithParents[currentID].word]) {
-      if (id > 100000) {
+      if (id > 150000) {
         return null;
       }
       if (testForWordAlreadyInTree(objectWithParents, word, currentID)) {
