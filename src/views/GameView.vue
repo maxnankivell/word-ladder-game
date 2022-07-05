@@ -35,24 +35,30 @@
     </div>
     <div class="bottom-button-section">
       <button
-        id="reset-puzzle"
+        class="reset-puzzle"
         :class="[colorMode === 'dark' ? 'dark' : 'light']"
         type="button"
         @click="resetCurrentPuzzle"
       >
         Reset
       </button>
-      <button id="show-hint" :class="[colorMode === 'dark' ? 'dark' : 'light']" type="button" @click="showHint">
+      <button class="show-hint" :class="[colorMode === 'dark' ? 'dark' : 'light']" type="button" @click="showHint">
         Hint
       </button>
-      <button id="show-solution" :class="[colorMode === 'dark' ? 'dark' : 'light']" type="button" @click="showSolution">
+      <button
+        class="show-solution"
+        :class="[colorMode === 'dark' ? 'dark' : 'light']"
+        type="button"
+        @click="showSolution"
+      >
         Solution
       </button>
       <!-- <button @click="populateObjectWithWordConnections">Populate Object With Word Connections</button> -->
     </div>
-    <button id="new-puzzle" :class="[colorMode === 'dark' ? 'dark' : 'light']" type="button" @click="newPuzzle">
+    <button class="new-puzzle" :class="[colorMode === 'dark' ? 'dark' : 'light']" type="button" @click="newPuzzle">
       New Random Puzzle
     </button>
+    <HintErrorModal v-if="showHintErrorModal" @close="showHintErrorModal = false" />
   </div>
 </template>
 
@@ -72,6 +78,7 @@ import {
   getRandomStartWordAndEndWord,
   getShortestSolution,
 } from "@/ladder-logic";
+import HintErrorModal from "@/components/HintErrorModal.vue";
 
 const { colorMode } = storeToRefs(useColorModeStore());
 const { wordArray, objectWithWordConnections } = storeToRefs(useWordObjectStore());
@@ -80,6 +87,7 @@ const startWord = useStorage<string[]>("startWord", ["t", "h", "e", "m"]);
 const endWord = useStorage<string[]>("endWord", ["t", "h", "a", "n"]);
 const inputWords = useStorage<string[][]>("inputWords", []);
 const hint = ref("");
+const showHintErrorModal = ref(false);
 
 onBeforeMount(async () => {
   if (wordArray.value.length > 0 && Object.keys(objectWithWordConnections.value).length > 0) {
@@ -115,6 +123,7 @@ async function newPuzzle() {
   [start, end] = await getRandomStartWordAndEndWord();
   startWord.value = start.split("");
   endWord.value = end.split("");
+  removeHint();
 }
 
 function addInputWord(newWordArr: string[]) {
@@ -123,6 +132,7 @@ function addInputWord(newWordArr: string[]) {
 
 function removeInputWord() {
   inputWords.value.pop();
+  hint.value = "";
 }
 
 function removeHint() {
@@ -146,7 +156,7 @@ function resetCurrentPuzzle() {
 function showHint() {
   const optimalWord = getOptimalNextWord(getLatestCompleteInputWord(), endWord.value.join(""));
   if (!optimalWord) {
-    //Display no path to end
+    showHintErrorModal.value = true;
     return;
   }
   hint.value = optimalWord;
@@ -197,9 +207,9 @@ function getLatestCompleteInputWord(): string {
   justify-content: center;
 }
 
-#reset-puzzle,
-#show-solution,
-#show-hint {
+.reset-puzzle,
+.show-solution,
+.show-hint {
   &.light {
     background-color: $yInMnBlue-1-light;
     box-shadow: 0 4px 6px -1px rgb(11 19 43 / 0.1), 0 2px 4px -2px rgb(11 19 43 / 0.1);
@@ -211,7 +221,8 @@ function getLatestCompleteInputWord(): string {
     box-shadow: 0px 0px 0px 3px rgba(58, 80, 107, 0.5) inset;
   }
 }
-#new-puzzle {
+
+.new-puzzle {
   &.light {
     // box-shadow: 0px 0px 0px 3px $melon inset;
     box-shadow: 0 4px 6px -1px rgb(11 19 43 / 0.1), 0 2px 4px -2px rgb(11 19 43 / 0.1), 0px 0px 0px 3px $melon inset;
