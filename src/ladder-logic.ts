@@ -17,27 +17,21 @@ export function getShortestSolution(wordEntered: string, finalWord: string): str
 
   // populateParentsObject(objectWithParents);
 
-  let id = 1;
-
-  objectWithParents[0] = { parentID: null, word: wordEntered };
-  queue.enQueue(0);
+  objectWithParents[wordEntered] = null;
+  queue.enQueue(wordEntered);
   while (!queue.isEmpty()) {
-    const currentID = queue.peek();
+    const currentWord = queue.peek();
     queue.deQueue();
-    for (const word of objectWithWordConnections.value[objectWithParents[currentID].word]) {
-      if (id > 150000) {
-        return null;
-      }
-      if (testForWordAlreadyInTree(objectWithParents, word, currentID)) {
+    for (const word of objectWithWordConnections.value[currentWord]) {
+      if (word in objectWithParents) {
         continue;
       }
 
-      objectWithParents[id] = { parentID: currentID, word: word };
+      objectWithParents[word] = currentWord;
       if (word === finalWord) {
-        return getPathFromRootToLeaf(objectWithParents, id);
+        return getPathFromRootToLeaf(objectWithParents, word);
       }
-      queue.enQueue(id);
-      id++;
+      queue.enQueue(word);
     }
   }
 
@@ -138,32 +132,32 @@ function getWordsWithNumberOfConnections(n: number): string[] {
   return result;
 }
 
-function testForWordAlreadyInTree(
-  objectWithParents: ParentConnection,
-  wordToLookFor: string,
-  IDAtLeafOfTree: number
-): boolean {
-  let testID: number | null = IDAtLeafOfTree;
-  let isAlreadyInTree = false;
-  if (objectWithParents[testID].word === wordToLookFor) {
-    isAlreadyInTree = true;
-  }
-  while (testID && objectWithParents[testID].parentID != null) {
-    testID = objectWithParents[testID].parentID;
-    if (testID && objectWithParents[testID].word === wordToLookFor) {
-      isAlreadyInTree = true;
-    }
-  }
-  return isAlreadyInTree;
-}
+// function testForWordAlreadyInTree(
+//   objectWithParents: ParentConnection,
+//   wordToLookFor: string,
+//   IDAtLeafOfTree: number
+// ): boolean {
+//   let testID: number | null = IDAtLeafOfTree;
+//   let isAlreadyInTree = false;
+//   if (objectWithParents[testID].word === wordToLookFor) {
+//     isAlreadyInTree = true;
+//   }
+//   while (testID && objectWithParents[testID].parentID != null) {
+//     testID = objectWithParents[testID].parentID;
+//     if (testID && objectWithParents[testID].word === wordToLookFor) {
+//       isAlreadyInTree = true;
+//     }
+//   }
+//   return isAlreadyInTree;
+// }
 
-function getPathFromRootToLeaf(objectWithParents: ParentConnection, IDAtLeafOfTree: number): string[] {
+function getPathFromRootToLeaf(objectWithParents: ParentConnection, WordAtLeafOfTree: string): string[] {
   const finalSequence = [];
-  let wordID: number | null = IDAtLeafOfTree;
+  let word: string | null = WordAtLeafOfTree;
   // The roots parent will always be empty string
-  while (wordID != null) {
-    finalSequence.unshift(objectWithParents[wordID].word);
-    wordID = objectWithParents[wordID].parentID;
+  while (word != null) {
+    finalSequence.unshift(word);
+    word = objectWithParents[word];
   }
 
   return finalSequence;

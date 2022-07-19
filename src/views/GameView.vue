@@ -1,5 +1,8 @@
 <template>
-  <div id="game-page">
+  <div class="game-page">
+    <div v-if="isLoading" class="loading-screen">
+      <pixel-spinner :animation-duration="2000" :size="200" color="#f4f3ee" />
+    </div>
     <div class="game-section">
       <v-otp-input
         :num-input="4"
@@ -79,6 +82,7 @@ import {
   getShortestSolution,
 } from "@/ladder-logic";
 import HintErrorModal from "@/components/HintErrorModal.vue";
+import { PixelSpinner } from "epic-spinners";
 
 const { colorMode } = storeToRefs(useColorModeStore());
 const { wordArray, objectWithWordConnections } = storeToRefs(useWordObjectStore());
@@ -88,6 +92,7 @@ const endWord = useStorage<string[]>("endWord", ["t", "h", "a", "n"]);
 const inputWords = useStorage<string[][]>("inputWords", []);
 const hint = ref("");
 const showHintErrorModal = ref(false);
+const isLoading = ref(false);
 
 onBeforeMount(async () => {
   if (wordArray.value.length > 0 && Object.keys(objectWithWordConnections.value).length > 0) {
@@ -117,6 +122,7 @@ const convertToSplitWordArray = (arr: string[]): string[][] => arr.map((element)
 async function newPuzzle() {
   //in future maybe save history here????
 
+  isLoading.value = true;
   inputWords.value = [];
   let start: string;
   let end: string;
@@ -124,6 +130,7 @@ async function newPuzzle() {
   startWord.value = start.split("");
   endWord.value = end.split("");
   removeHint();
+  isLoading.value = false;
 }
 
 function addInputWord(newWordArr: string[]) {
@@ -182,11 +189,25 @@ function getLatestCompleteInputWord(): string {
 </script>
 
 <style scoped lang="scss">
-#game-page {
+.game-page {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 3rem;
+}
+
+.loading-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: 999;
 }
 
 .game-section {
