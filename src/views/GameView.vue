@@ -240,21 +240,23 @@ function getLatestCompleteInputWord(): string {
     border: 0;
   }
 
-  &:focus {
-    outline: 5px solid yellow;
-  }
-
   &.light {
     background-color: $yInMnBlue;
     box-shadow: 0 4px 6px -1px rgb(11 19 43 / 0.1), 0 2px 4px -2px rgb(11 19 43 / 0.1);
     &::placeholder {
       color: $isabelline;
     }
+    &:focus {
+      outline: 5px solid $melon;
+    }
   }
   &.dark {
     background-color: $spaceCadet-1-dark;
     &::placeholder {
       color: $isabelline;
+    }
+    &:focus {
+      outline: 5px solid white;
     }
   }
 }

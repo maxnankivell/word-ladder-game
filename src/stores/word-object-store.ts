@@ -1,6 +1,5 @@
 import { WordConnection } from "@/types";
 import { defineStore } from "pinia";
-import { ref } from "vue";
 import { useStorage } from "@vueuse/core";
 
 export const useWordObjectStore = defineStore("wordObjectStore", () => {
