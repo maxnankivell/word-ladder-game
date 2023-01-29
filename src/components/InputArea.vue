@@ -92,15 +92,8 @@ function checkDeleteWord() {
 }
 
 function getConditionalClassArray(index: number) {
-  if (index === 0) {
-    return props.inputWords[0].map((letter, letterIndex) =>
-      letter === props.startWord[letterIndex]
-        ? `prev-${letterIndex + 1} ${colorMode.value === "dark" ? "dark" : "light"}`
-        : ``
-    );
-  }
   return props.inputWords[index].map((letter, letterIndex) =>
-    letter === props.inputWords[index - 1][letterIndex]
+    letter === props.finalWord[letterIndex]
       ? `prev-${letterIndex + 1} ${colorMode.value === "dark" ? "dark" : "light"}`
       : ``
   );
