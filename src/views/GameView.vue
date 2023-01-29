@@ -185,7 +185,6 @@ function showPossibleNextWords() {
 
 function getLatestCompleteInputWord(): string {
   if (inputWords.value.length !== 0) {
-    console.log(inputWords.value);
     return inputWords.value[inputWords.value.length - 1].join("");
   }
   return startWord.value.join("");

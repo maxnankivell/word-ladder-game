@@ -33,11 +33,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps, defineEmits, computed } from "vue";
+import { ref, defineProps, defineEmits, computed, watch } from "vue";
 import { storeToRefs } from "pinia";
 import VOtpInput from "vue3-otp-input";
 import { useColorModeStore } from "@/stores/color-mode-store";
 import { isValidWord } from "@/ladder-logic";
+
+import confetti from "canvas-confetti";
 
 const { colorMode } = storeToRefs(useColorModeStore());
 
@@ -62,13 +64,22 @@ const clearInput = () => otpInput.value?.clearInput();
 const isPuzzleComplete = computed(
   () => props.inputWords.length > 0 && props.inputWords[props.inputWords.length - 1].join("") === props.finalWord
 );
+
+watch(
+  () => isPuzzleComplete.value,
+  () => {
+    if (isPuzzleComplete.value) {
+      confetti();
+    }
+  }
+);
+
 const getPreviousWord = () =>
   props.inputWords.length > 0 ? props.inputWords[props.inputWords.length - 1].join("") : props.startWord;
 
 let emptyCount = 2;
 
 async function updateCurrentWord(newWord: string) {
-  console.log("change");
   if (newWord === "") {
     emptyCount = 1;
   } else {
@@ -83,7 +94,6 @@ async function updateCurrentWord(newWord: string) {
 }
 
 function checkDeleteWord() {
-  console.log("deletekey");
   if (emptyCount === 1) {
     emptyCount = 2;
   } else if (emptyCount === 2) {

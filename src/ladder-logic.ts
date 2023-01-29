@@ -90,10 +90,8 @@ export async function getRandomStartWordAndEndWord(): Promise<string[]> {
     !getWordsWithNumberOfConnections(1).includes(wordArray.value[secondNumber]) &&
     getShortestSolution(wordArray.value[firstNumber], wordArray.value[secondNumber])
   ) {
-    console.log("success: ", wordArray.value[firstNumber], wordArray.value[secondNumber]);
     return [wordArray.value[firstNumber], wordArray.value[secondNumber]];
   }
-  console.log("fail: ", wordArray.value[firstNumber], wordArray.value[secondNumber]);
   return getRandomStartWordAndEndWord();
 }
 
