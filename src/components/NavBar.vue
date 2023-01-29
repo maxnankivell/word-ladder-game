@@ -31,6 +31,7 @@
         :class="[colorMode === 'dark' ? 'dark' : 'light']"
         @mouseover="iconWeight[2] = 'fill'"
         @mouseleave="iconWeight[2] = 'regular'"
+        @click="isHelpModalVisible = true"
       >
         <ph-question :size="'3.2rem'" :weight="iconWeight[2]" />
       </div>
@@ -43,9 +44,11 @@ import { PhQuestion, PhArchive, PhHouseSimple } from "phosphor-vue";
 import { onBeforeMount, ref, watch } from "vue";
 import DarkLightSwitch from "@/components/DarkLightSwitch.vue";
 import { useColorModeStore } from "@/stores/color-mode-store";
+import { useHelpModalVisibilityStore } from "@/stores/help-modal-visibility-store";
 import { storeToRefs } from "pinia";
 
 const { colorMode } = storeToRefs(useColorModeStore());
+const { isHelpModalVisible } = storeToRefs(useHelpModalVisibilityStore());
 const toggleValue = ref(false);
 
 onBeforeMount(() => (colorMode.value === "dark" ? (toggleValue.value = false) : (toggleValue.value = true)));
