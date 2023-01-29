@@ -71,7 +71,7 @@ watch(
   () => isPuzzleComplete.value,
   () => {
     isPuzzleCompleteStatus.value = isPuzzleComplete.value;
-    if (isPuzzleComplete.value) {
+    if (isPuzzleCompleteStatus.value) {
       confetti();
     }
   }
