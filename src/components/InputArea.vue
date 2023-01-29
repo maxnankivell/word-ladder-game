@@ -8,7 +8,7 @@
         inputmode="text"
         separator=""
         :placeholder="word"
-        :conditional-class="['one', 'two', 'three', 'four']"
+        :conditional-class="getConditionalClassArray(index)"
         :is-disabled="true"
         class="input-otp-main"
       />
@@ -23,7 +23,7 @@
       separator=""
       :placeholder="hint.split('')"
       :should-auto-focus="true"
-      :conditional-class="['one', 'two', 'three', 'four']"
+      :conditional-class="['one-active', 'two-active', 'three-active', 'four-active']"
       :is-disabled="false"
       class="input-otp-main"
       @keydown.backspace="checkDeleteWord"
@@ -90,6 +90,17 @@ function checkDeleteWord() {
     emit("remove-input-word");
   }
 }
+
+function getConditionalClassArray(index: number) {
+  if (index === 0) {
+    return props.inputWords[0].map((letter, letterIndex) =>
+      letter === props.startWord[letterIndex] ? `prev-${letterIndex + 1}` : ``
+    );
+  }
+  return props.inputWords[index].map((letter, letterIndex) =>
+    letter === props.inputWords[index - 1][letterIndex] ? `prev-${letterIndex + 1}` : ``
+  );
+}
 </script>
 
 <style lang="scss" scoped>
@@ -119,16 +130,15 @@ function checkDeleteWord() {
     border: 0;
   }
 
-  &:focus {
-    outline: 5px solid yellow;
-  }
-
   &.light {
     border: 3px solid $yInMnBlue;
     box-shadow: 0 4px 6px -1px rgb(11 19 43 / 0.1), 0 2px 4px -2px rgb(11 19 43 / 0.1);
     color: $yInMnBlue;
     &::placeholder {
       color: $yInMnBlue;
+    }
+    &:focus {
+      outline: 5px solid $melon;
     }
   }
   &.dark {
@@ -138,7 +148,17 @@ function checkDeleteWord() {
     &::placeholder {
       color: $isabelline;
     }
+    &:focus {
+      outline: 5px solid white;
+    }
   }
+}
+
+.prev-1,
+.prev-2,
+.prev-3,
+.prev-4 {
+  background-color: green;
 }
 
 .input-otp-input-active {

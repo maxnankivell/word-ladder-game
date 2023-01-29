@@ -1,7 +1,7 @@
 <template>
   <div id="nav-bar-box" :class="[colorMode === 'dark' ? 'dark' : 'light']">
     <div class="nav-flex">
-      <router-link to="/"
+      <!-- <router-link to="/"
         ><div
           class="nav-element"
           :class="[colorMode === 'dark' ? 'dark' : 'light']"
@@ -18,7 +18,7 @@
           @mouseleave="iconWeight[1] = 'regular'"
         >
           <ph-archive :size="'3.2rem'" :weight="iconWeight[1]" /></div
-      ></router-link>
+      ></router-link> -->
     </div>
     <router-link to="/"
       ><h1 class="nav-title" :class="[colorMode === 'dark' ? 'dark' : 'light']">WordLadder</h1></router-link
