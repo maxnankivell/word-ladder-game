@@ -250,7 +250,7 @@ function getLatestCompleteInputWord(): string {
 .new-puzzle {
   &.light {
     // box-shadow: 0px 0px 0px 3px $melon inset;
-    box-shadow: 0 4px 6px -1px rgb(11 19 43 / 0.1), 0 2px 4px -2px rgb(11 19 43 / 0.1), 0px 0px 0px 3px $melon inset;
+    box-shadow: 0 4px 6px -1px rgb(11 19 43 / 0.1), 0 2px 4px -2px rgb(11 19 43 / 0.1), 0px 0px 0px 3px $yInMnBlue inset;
     color: $yInMnBlue;
   }
   &.dark {
@@ -283,7 +283,7 @@ function getLatestCompleteInputWord(): string {
       color: $isabelline;
     }
     &:focus {
-      outline: 5px solid $melon;
+      outline: 5px solid $yInMnBlue;
     }
   }
   &.dark {

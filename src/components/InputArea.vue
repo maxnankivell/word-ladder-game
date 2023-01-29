@@ -94,11 +94,15 @@ function checkDeleteWord() {
 function getConditionalClassArray(index: number) {
   if (index === 0) {
     return props.inputWords[0].map((letter, letterIndex) =>
-      letter === props.startWord[letterIndex] ? `prev-${letterIndex + 1}` : ``
+      letter === props.startWord[letterIndex]
+        ? `prev-${letterIndex + 1} ${colorMode.value === "dark" ? "dark" : "light"}`
+        : ``
     );
   }
   return props.inputWords[index].map((letter, letterIndex) =>
-    letter === props.inputWords[index - 1][letterIndex] ? `prev-${letterIndex + 1}` : ``
+    letter === props.inputWords[index - 1][letterIndex]
+      ? `prev-${letterIndex + 1} ${colorMode.value === "dark" ? "dark" : "light"}`
+      : ``
   );
 }
 </script>
@@ -158,7 +162,12 @@ function getConditionalClassArray(index: number) {
 .prev-2,
 .prev-3,
 .prev-4 {
-  background-color: green;
+  &.light {
+    background-color: $tea-green;
+  }
+  &.dark {
+    background-color: $dark-sea-green;
+  }
 }
 
 .input-otp-input-active {

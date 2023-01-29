@@ -51,8 +51,15 @@ button {
   border-radius: 4px;
   transition: all 0.05s;
   cursor: pointer;
-  &:focus {
-    outline: 5px solid yellow;
+  &.light {
+    &:focus {
+      outline: 5px solid $melon;
+    }
+  }
+  &.dark {
+    &:focus {
+      outline: 5px solid white;
+    }
   }
   &:hover {
     transform: scale(1.15);
