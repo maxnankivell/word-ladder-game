@@ -62,16 +62,18 @@
       New Random Puzzle
     </button>
     <HintErrorModal v-if="showHintErrorModal" @close="showHintErrorModal = false" />
+    <HelpModal v-if="isHelpModalVisible" @close="isHelpModalVisible = false" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useWordObjectStore } from "@/stores/word-object-store";
+import { useColorModeStore } from "@/stores/color-mode-store";
+import { useHelpModalVisibilityStore } from "@/stores/help-modal-visibility-store";
 import VOtpInput from "vue3-otp-input";
 import { onBeforeMount, onMounted, ref } from "vue";
 import InputArea from "@/components/InputArea.vue";
-import { useColorModeStore } from "@/stores/color-mode-store";
 import { doc, getDoc } from "firebase/firestore";
 import db from "@/firebase";
 import { useStorage } from "@vueuse/core";
@@ -82,10 +84,12 @@ import {
   getShortestSolution,
 } from "@/ladder-logic";
 import HintErrorModal from "@/components/HintErrorModal.vue";
+import HelpModal from "@/components/HelpModal.vue";
 import { PixelSpinner } from "epic-spinners";
 
 const { colorMode } = storeToRefs(useColorModeStore());
 const { wordArray, objectWithWordConnections } = storeToRefs(useWordObjectStore());
+const { isHelpModalVisible } = storeToRefs(useHelpModalVisibilityStore());
 
 const startWord = useStorage<string[]>("startWord", ["t", "h", "e", "m"]);
 const endWord = useStorage<string[]>("endWord", ["t", "h", "a", "n"]);
@@ -113,7 +117,7 @@ onBeforeMount(async () => {
 
 onMounted(() => {
   if (startWord.value.join("") === `them` && endWord.value.join("") === `than`) {
-    //show intro modal
+    isHelpModalVisible.value = true;
   }
 });
 
