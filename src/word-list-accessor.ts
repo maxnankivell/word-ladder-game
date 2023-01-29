@@ -15,8 +15,6 @@ if (docSnap.exists()) {
 
 const content = commonWords.join(", ");
 
-console.log(content);
-
 // async function populateDatabase() {
 //   let commonWords: string[] = [];
 

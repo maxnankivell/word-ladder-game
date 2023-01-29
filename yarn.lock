@@ -749,6 +749,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/canvas-confetti@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "@types/canvas-confetti@npm:1.6.0"
+  checksum: e1bd2bc81e4d6ec6241982a4087ed90a3c21f858390dda7cb68e8aeb1df5573fc7c263ea4272397d2b39f0e78dcd192e8ba4a93c182ff29f80ea74073aaee496
+  languageName: node
+  linkType: hard
+
 "@types/json-schema@npm:^7.0.9":
   version: 7.0.9
   resolution: "@types/json-schema@npm:7.0.9"
@@ -1403,6 +1410,13 @@ __metadata:
   version: 3.1.0
   resolution: "callsites@npm:3.1.0"
   checksum: 072d17b6abb459c2ba96598918b55868af677154bec7e73d222ef95a8fdb9bbf7dae96a8421085cdad8cd190d86653b5b6dc55a4484f2e5b2e27d5e0c3fc15b3
+  languageName: node
+  linkType: hard
+
+"canvas-confetti@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "canvas-confetti@npm:1.6.0"
+  checksum: be19e3be736ab28aa8af7b53cba9f4146f5714edadbf4d5a7d7b1899914dc59a8ac5574260fe6b7d9995c51df5787b0b707adfbb72dbacbc61fc03f9f2b25291
   languageName: node
   linkType: hard
 
@@ -2747,6 +2761,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "kdm-gear-grid@workspace:."
   dependencies:
+    "@types/canvas-confetti": ^1.6.0
     "@types/node": ^17.0.21
     "@typescript-eslint/eslint-plugin": ^5.13.0
     "@typescript-eslint/parser": ^5.13.0
@@ -2754,6 +2769,7 @@ __metadata:
     "@vue/eslint-config-prettier": ^7.0.0
     "@vue/eslint-config-typescript": ^10.0.0
     "@vueuse/core": ^8.6.0
+    canvas-confetti: ^1.6.0
     epic-spinners: ^1.1.0
     eslint: ^8.10.0
     eslint-config-prettier: ^8.4.0
