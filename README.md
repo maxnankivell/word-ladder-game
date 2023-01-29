@@ -1,13 +1,8 @@
-# Remember to add the name of the project to the base property in the vite config
+# Hosted At
+https://word-ladder-game.web.app/
 
-# Vue 3 + Typescript + Vite
+The word ladder puzzle was invented in 1878 by Lewis Carroll.
 
-This template should help get you started developing with Vue 3 and Typescript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Given a four letter start word and a four letter end word, the goal of Word Ladder is to connect the two words. Each connecting word must only be one letter different than the word before it.
 
-## Recommended IDE Setup
-
-- [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar)
-
-## Type Support For `.vue` Imports in TS
-
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's `.vue` type support plugin by running `Volar: Switch TS Plugin on/off` from VSCode command palette.
+This website creates random word ladder puzzles, for endless word games.
