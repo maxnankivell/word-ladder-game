@@ -14,7 +14,7 @@
       />
     </template>
     <v-otp-input
-      v-if="!isPuzzleComplete"
+      v-if="!isPuzzleCompleteStatus"
       ref="otpInput"
       :num-input="4"
       :input-classes="['input-otp-input-active', colorMode === 'dark' ? 'dark' : 'light']"
@@ -37,11 +37,13 @@ import { ref, defineProps, defineEmits, computed, watch } from "vue";
 import { storeToRefs } from "pinia";
 import VOtpInput from "vue3-otp-input";
 import { useColorModeStore } from "@/stores/color-mode-store";
+import { usePuzzleCompleteStatusStore } from "@/stores/puzzle-complete-status-store";
 import { isValidWord } from "@/ladder-logic";
 
 import confetti from "canvas-confetti";
 
 const { colorMode } = storeToRefs(useColorModeStore());
+const { isPuzzleCompleteStatus } = storeToRefs(usePuzzleCompleteStatusStore());
 
 interface Props {
   inputWords: string[][];
@@ -68,6 +70,7 @@ const isPuzzleComplete = computed(
 watch(
   () => isPuzzleComplete.value,
   () => {
+    isPuzzleCompleteStatus.value = isPuzzleComplete.value;
     if (isPuzzleComplete.value) {
       confetti();
     }

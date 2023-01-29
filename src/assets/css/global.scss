@@ -64,6 +64,13 @@ button {
   &:hover {
     transform: scale(1.15);
   }
+  &:disabled {
+    opacity: 0.6;
+    
+    &:hover {
+      transform: scale(1);
+    }
+  }
 }
 
 a {
