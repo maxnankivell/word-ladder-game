@@ -5,9 +5,20 @@
       Given a four letter start word and a four letter end word, the goal of Word Ladder is to connect the two words.
       Each connecting word must only be one letter different than the word before it.
     </p>
-    <!-- enter an example gif -->
+    <img
+      v-if="colorMode === 'dark'"
+      class="example-gif"
+      src="@/assets/gifs/dark-mode.gif"
+      alt="example gif showing how to solve a simple word ladder puzzle"
+    />
+    <img
+      v-if="colorMode === 'light'"
+      class="example-gif"
+      src="@/assets/gifs/light-mode.gif"
+      alt="example gif showing how to solve a simple word ladder puzzle"
+    />
     <p class="extra-info hint-explanation" :class="[colorMode === 'dark' ? 'dark' : 'light']">
-      If you get stuck at any point you can click the
+      If you get stuck you can click the
       <span class="stand-button-example" :class="[colorMode === 'dark' ? 'dark' : 'light']">hint</span> button to get
       the best word to enter next.
     </p>
@@ -45,6 +56,7 @@ const { colorMode } = storeToRefs(useColorModeStore());
 
 <style scoped lang="scss">
 .header {
+  font-size: 2.8rem;
   &.light {
     color: $yInMnBlue-1-light;
   }
@@ -54,7 +66,7 @@ const { colorMode } = storeToRefs(useColorModeStore());
 }
 .close {
   margin-top: auto;
-  font-size: 2.8rem;
+  font-size: 1.6rem;
 
   &.light {
     background-color: $yInMnBlue-1-light;
@@ -68,10 +80,14 @@ const { colorMode } = storeToRefs(useColorModeStore());
   }
 }
 
+.example-gif {
+  width: 23rem;
+}
+
 .main-message {
   padding: 0 1.2rem;
   margin: 0;
-  font-size: 2rem;
+  font-size: 1.6rem;
   text-align: center;
 
   &.light {
@@ -85,7 +101,7 @@ const { colorMode } = storeToRefs(useColorModeStore());
 .extra-info {
   padding: 0.6rem 1.2rem;
   margin: 0;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   text-align: center;
 
   &.light {
@@ -97,7 +113,7 @@ const { colorMode } = storeToRefs(useColorModeStore());
 }
 
 .stand-button-example {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   font-weight: 600;
   padding: 0.2rem 0.3rem;
   border-radius: 4px;
@@ -116,7 +132,7 @@ const { colorMode } = storeToRefs(useColorModeStore());
 }
 
 .main-button-example {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   font-weight: 600;
   padding: 0.2rem 0.3rem;
   border-radius: 4px;

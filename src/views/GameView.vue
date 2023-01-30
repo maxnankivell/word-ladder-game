@@ -45,12 +45,19 @@
       >
         Reset
       </button>
-      <button class="show-hint" :class="[colorMode === 'dark' ? 'dark' : 'light']" type="button" @click="showHint">
+      <button
+        class="show-hint"
+        :class="[colorMode === 'dark' ? 'dark' : 'light']"
+        :disabled="isPuzzleCompleteStatus"
+        type="button"
+        @click="showHint"
+      >
         Hint
       </button>
       <button
         class="show-solution"
         :class="[colorMode === 'dark' ? 'dark' : 'light']"
+        :disabled="isPuzzleCompleteStatus"
         type="button"
         @click="showSolution"
       >
@@ -71,6 +78,7 @@ import { storeToRefs } from "pinia";
 import { useWordObjectStore } from "@/stores/word-object-store";
 import { useColorModeStore } from "@/stores/color-mode-store";
 import { useHelpModalVisibilityStore } from "@/stores/help-modal-visibility-store";
+import { usePuzzleCompleteStatusStore } from "@/stores/puzzle-complete-status-store";
 import VOtpInput from "vue3-otp-input";
 import { onBeforeMount, onMounted, ref } from "vue";
 import InputArea from "@/components/InputArea.vue";
@@ -90,6 +98,7 @@ import { PixelSpinner } from "epic-spinners";
 const { colorMode } = storeToRefs(useColorModeStore());
 const { wordArray, objectWithWordConnections } = storeToRefs(useWordObjectStore());
 const { isHelpModalVisible } = storeToRefs(useHelpModalVisibilityStore());
+const { isPuzzleCompleteStatus } = storeToRefs(usePuzzleCompleteStatusStore());
 
 const startWord = useStorage<string[]>("startWord", ["t", "h", "e", "m"]);
 const endWord = useStorage<string[]>("endWord", ["t", "h", "a", "n"]);
